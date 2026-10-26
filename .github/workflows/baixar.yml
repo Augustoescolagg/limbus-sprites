@@ -1,0 +1,33 @@
+
+name: Baixar sprites Limbus
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  baixar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v4
+
+      - name: Preparar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar biblioteca
+        run: pip install requests
+
+      - name: Executar coletor
+        run: python download_sprites.py
+
+      - name: Disponibilizar ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: Limbus-Sprites
+          path: Limbus_Sprites.zip
+          if-no-files-found: error
